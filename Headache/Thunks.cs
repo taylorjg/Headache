@@ -21,7 +21,8 @@ namespace Headache
                     using (var memoryStream = new MemoryStream())
                     {
                         await fileStream.CopyToAsync(memoryStream);
-                        callback(null, memoryStream.ToArray());
+                        var data = memoryStream.ToArray();
+                        callback(null, data);
                     }
                 }
             }

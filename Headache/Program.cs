@@ -32,17 +32,6 @@ namespace Headache
             Console.ReadKey();
         }
 
-        private static IEnumerable<Action<Action<Exception, Byte[]>>> ThunkGen(Holder<Byte[]> holder)
-        {
-            yield return Thunks.ReadFile(FileName1);
-            var file1 = holder.Value;
-            yield return Thunks.ReadFile(FileName2);
-            var file2 = holder.Value;
-
-            Console.WriteLine("file1.Length: {0,15:N0}", file1.Length);
-            Console.WriteLine("file2.Length: {0,15:N0}", file2.Length);
-        }
-
         private static IEnumerable<int> HelloGen()
         {
             yield return 100;
@@ -56,6 +45,17 @@ namespace Headache
             yield return a + 100;
             var b = holder.Value;
             Console.WriteLine("b = {0}", b);
+        }
+
+        private static IEnumerable<Action<Action<Exception, Byte[]>>> ThunkGen(Holder<Byte[]> holder)
+        {
+            yield return Thunks.ReadFile(FileName1);
+            var file1 = holder.Value;
+            yield return Thunks.ReadFile(FileName2);
+            var file2 = holder.Value;
+
+            Console.WriteLine("file1.Length: {0,15:N0}", file1.Length);
+            Console.WriteLine("file2.Length: {0,15:N0}", file2.Length);
         }
     }
 }

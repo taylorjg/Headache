@@ -20,16 +20,16 @@ namespace Headache
 
         private void NextItem()
         {
-            var item = _ge.Next();
-            if (!item.Done)
-            {
-                item.Value(NextItem);
-            }
+            HandleItem(_ge.Next());
         }
 
         private void NextItem(Exception ex, T result)
         {
-            var item = _ge.Next(result);
+            HandleItem(_ge.Next(result));
+        }
+
+        private void HandleItem(GeneratorEnumeratorResult<Action<Action<Exception, T>>> item)
+        {
             if (!item.Done)
             {
                 item.Value(NextItem);

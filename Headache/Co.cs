@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 namespace Headache
 {
-    internal class Co
+    internal class Co<T>
     {
-        private readonly IEnumerable<Action<Thunks.ReadFileCallback>> _gen;
-        private readonly Holder<byte[]> _holder;
-        private readonly GeneratorEnumerator<Action<Thunks.ReadFileCallback>, byte[]> _ge;
+        private readonly IEnumerable<Action<Action<Exception, T>>> _gen;
+        private readonly Holder<T> _holder;
+        private readonly GeneratorEnumerator<Action<Action<Exception, T>>, T> _ge;
 
-        public Co(Func<Holder<byte[]>, IEnumerable<Action<Thunks.ReadFileCallback>>> generator)
+        public Co(Func<Holder<T>, IEnumerable<Action<Action<Exception, T>>>> generator)
         {
-            _holder = Holder.Create(null as Byte[]);
+            _holder = Holder.Create(default(T));
             _gen = generator(_holder);
-            _ge = new GeneratorEnumerator<Action<Thunks.ReadFileCallback>, Byte[]>(_gen.GetEnumerator(), _holder);
+            _ge = new GeneratorEnumerator<Action<Action<Exception, T>>, T>(_gen.GetEnumerator(), _holder);
 
             NextItem();
         }
@@ -27,7 +27,7 @@ namespace Headache
             }
         }
 
-        private void NextItem(Exception err, Byte[] result)
+        private void NextItem(Exception ex, T result)
         {
             var item = _ge.Next(result);
             if (!item.Done)

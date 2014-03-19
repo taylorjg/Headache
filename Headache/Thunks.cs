@@ -5,14 +5,12 @@ namespace Headache
 {
     internal static class Thunks
     {
-        public delegate void ReadFileCallback(Exception ex, Byte[] data);
-
-        public static Action<ReadFileCallback> ReadFile(string fileName)
+        public static Action<Action<Exception, Byte[]>> ReadFile(string fileName)
         {
             return callback => ReadFile(fileName, callback);
         }
 
-        private static async void ReadFile(string fileName, ReadFileCallback callback)
+        private static async void ReadFile(string fileName, Action<Exception, Byte[]> callback)
         {
             try
             {

@@ -26,13 +26,13 @@ namespace Headache
             Console.WriteLine("next(1000) = {0}", ge.Next(1000));
             Console.WriteLine();
 
-            var co = new Co(ThunkGen);
+            var co = new Co<Byte[]>(ThunkGen);
 
             Console.WriteLine("Press a key to continue...");
             Console.ReadKey();
         }
 
-        private static IEnumerable<Action<Thunks.ReadFileCallback>> ThunkGen(Holder<Byte[]> holder)
+        private static IEnumerable<Action<Action<Exception, Byte[]>>> ThunkGen(Holder<Byte[]> holder)
         {
             yield return Thunks.ReadFile(FileName1);
             var file1 = holder.Value;
